@@ -15,6 +15,7 @@ import {
   Alert
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ExpenseList from './src/components/expenses'; // Import the ExpenseList component
 
 // Categories with their respective colors
 const CATEGORIES = [
@@ -303,26 +304,12 @@ export default function App() {
       </View>
       
       {/* Expense List */}
-      {expenses.length > 0 ? (
-        <FlatList
-          data={groupedExpensesArray}
-          keyExtractor={(item) => item.date}
-          renderItem={({ item }) => (
-            <View style={styles.dateGroup}>
-              <Text style={styles.dateHeader}>{item.date}</Text>
-              <FlatList
-                data={item.data}
-                keyExtractor={(expense) => expense.id}
-                renderItem={renderExpenseItem}
-              />
-            </View>
-          )}
-        />
-      ) : (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyStateText}>Нет расходов. Добавьте свой первый расход!</Text>
-        </View>
-      )}
+      <ExpenseList
+        expenses={expenses}
+        primaryCurrency={primaryCurrency}
+        onDeleteExpense={deleteExpense}
+        getExchangeRate={getExchangeRate}
+      />
       
       {/* Add Expense Button */}
       <TouchableOpacity 
